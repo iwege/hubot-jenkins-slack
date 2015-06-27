@@ -62,7 +62,7 @@ module.exports = (robot) ->
     if data.build.duration
       payload.content.fields.push
         title: "Duration"
-        value: data.bulid.duration
+        value: data.build.duration
         short: true
 
     payload.content.fields.push
