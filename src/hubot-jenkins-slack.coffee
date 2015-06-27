@@ -84,10 +84,6 @@ module.exports = (robot) ->
             value: data.build.scm.branch
             short: true
 
-        payload.content.fields.push
-          title: "Status"
-          value: data.build.status
-          short: true
 
         color = switch data.build.status
           when "ABORTED"       then HUBOT_JENKINS_COLOR_ABORTED
@@ -134,7 +130,7 @@ module.exports = (robot) ->
 
     payload.content.color     = color
     payload.content.pretext   = "#{data.name} ##{data.build.number}"
-    payload.content.title      = "[#{status}] <#{data.build.full_url}|BUILD#{data.build.number} #{data.name}>"
+    payload.content.title      = "[#{status}] <#{data.build.full_url}| #{data.name} ##{data.build.number}>"
     payload.content.fallback  = "Jenkins #{data.name} #{data.build.phase} #{status} #{data.build.full_url}"
     payload.username          = HUBOT_JENKINS_BOT_NAME
     payload.icon_url          = HUBOT_JENKINS_BOT_ICON
