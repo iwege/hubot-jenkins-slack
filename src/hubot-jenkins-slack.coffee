@@ -129,8 +129,7 @@ module.exports = (robot) ->
               short: true
 
     payload.content.color     = color
-    payload.content.pretext   = "#{data.name} ##{data.build.number}"
-    payload.content.title      = "[#{status}] <#{data.build.full_url}| #{data.name} ##{data.build.number}>"
+    payload.content.title      = "<#{data.build.full_url}| ##{data.build.number}  #{data.name} >  #{status}"
     payload.content.fallback  = "Jenkins #{data.name} #{data.build.phase} #{status} #{data.build.full_url}"
     payload.username          = HUBOT_JENKINS_BOT_NAME
     payload.icon_url          = HUBOT_JENKINS_BOT_ICON
