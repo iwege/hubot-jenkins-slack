@@ -31,7 +31,7 @@ HUBOT_JENKINS_COLOR_STILL_FAILING = process.env.HUBOT_JENKINS_COLOR_STILL_FAILIN
 HUBOT_JENKINS_COLOR_SUCCESS       = process.env.HUBOT_JENKINS_COLOR_SUCCESS       || "good"
 HUBOT_JENKINS_COLOR_DEFAULT       = process.env.HUBOT_JENKINS_COLOR_DEFAULT       || "#ffe094"
 HUBOT_JENKINS_BOT_ICON            = process.env.HUBOT_JENKINS_BOT_ICON            || "https://slack.global.ssl.fastly.net/7bf4/img/services/jenkins-ci_48.png"
-HUBOT_JENKINS_BOT_NAME            = process.env.HUBOT_JENKINS_BOT_NAME            || "jenkins"
+HUBOT_JENKINS_BOT_NAME            = process.env.HUBOT_JENKINS_BOT_NAME            || "Jenkins"
 
 module.exports = (robot) ->
   robot.router.post "/#{robot.name}/jenkins", (req, res) ->
@@ -67,14 +67,9 @@ module.exports = (robot) ->
         value: data.build.duration
         short: true
 
-    payload.content.fields.push
-      title: "Build #"
-      value: "<#{data.build.full_url}|#{data.build.number}>"
-      short: true
-
     switch data.build.phase
       when "FINALIZED"
-        status = "#{data.build.phase} with #{data.build.status}"
+        status = "#{data.build.status}"
 
 
         if data.build.scm?.commit
@@ -137,11 +132,12 @@ module.exports = (robot) ->
               value: data.build.scm.branch
               short: true
 
-    payload.content.color    = color
-    payload.content.pretext  = "Jenkins #{data.name} #{status} #{data.build.full_url}"
-    payload.content.fallback = payload.content.pretext
-    payload.username         = HUBOT_JENKINS_BOT_NAME
-    payload.icon_url         = HUBOT_JENKINS_BOT_ICON
+    payload.content.color     = color
+    payload.content.pretext   = "#{data.name} ##{data.build.number}"
+    payload.content.title      = "[#{status}] <#{data.build.full_url}|BUILD#{data.build.number} #{data.name}>"
+    payload.content.fallback  = "Jenkins #{data.name} #{data.build.phase} #{status} #{data.build.full_url}"
+    payload.username          = HUBOT_JENKINS_BOT_NAME
+    payload.icon_url          = HUBOT_JENKINS_BOT_ICON
 
     if req.query.debug
       console.log payload
