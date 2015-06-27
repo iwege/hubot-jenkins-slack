@@ -59,9 +59,33 @@ module.exports = (robot) ->
       value: data.build.phase
       short: true
 
+    if data.build.duration
+      payload.content.fields.push
+        title: "Duration"
+        value: data.bulid.duration
+        short: true
+
+    payload.content.fields.push
+      title: "Build #"
+      value: "<#{data.build.full_url}|#{data.build.number}>"
+      short: true
+
     switch data.build.phase
       when "FINALIZED"
         status = "#{data.build.phase} with #{data.build.status}"
+
+
+        if data.build.scm?.commit
+          payload.content.fields.push
+            title: "Commit SHA1"
+            value: data.build.scm.commit
+            short: true
+              
+        if data.build.scm?.branch
+          payload.content.fields.push
+            title: "Branch"
+            value: data.build.scm.branch
+            short: true
 
         payload.content.fields.push
           title: "Status"
@@ -80,14 +104,9 @@ module.exports = (robot) ->
         status = data.build.phase
         color = "#e9f1ea"
 
-        payload.content.fields.push
-          title: "Build #"
-          value: "<#{data.build.full_url}|#{data.build.number}>"
-          short: true
-
         params = data.build.parameters
 
-        if params and params.ghprbPullId
+        if params?.ghprbPullId
           payload.content.fields.push
             title: "Source branch"
             value: params.ghprbSourceBranch
@@ -105,14 +124,16 @@ module.exports = (robot) ->
             value: params.ghprbPullLink
             short: true
         else
-          payload.content.fields.push
-            title: "Commit SHA1"
-            value: data.build.scm.commit
-            short: true
-          payload.content.fields.push
-            title: "Branch"
-            value: data.build.scm.branch
-            short: true
+          if data.build.scm?.commit
+            payload.content.fields.push
+              title: "Commit SHA1"
+              value: data.build.scm.commit
+              short: true
+          if data.build.scm?.branch
+            payload.content.fields.push
+              title: "Branch"
+              value: data.build.scm.branch
+              short: true
 
     payload.content.color    = color
     payload.content.pretext  = "Jenkins #{data.name} #{status} #{data.build.full_url}"
@@ -121,4 +142,4 @@ module.exports = (robot) ->
     if req.query.debug
       console.log payload
 
-    robot.emit "slack-attachment", payload
+    robot.emit "slack.attachment", payload
