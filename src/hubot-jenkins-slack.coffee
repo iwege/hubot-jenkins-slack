@@ -30,7 +30,7 @@ HUBOT_JENKINS_COLOR_FIXED         = process.env.HUBOT_JENKINS_COLOR_FIXED       
 HUBOT_JENKINS_COLOR_STILL_FAILING = process.env.HUBOT_JENKINS_COLOR_STILL_FAILING || "danger"
 HUBOT_JENKINS_COLOR_SUCCESS       = process.env.HUBOT_JENKINS_COLOR_SUCCESS       || "good"
 HUBOT_JENKINS_COLOR_DEFAULT       = process.env.HUBOT_JENKINS_COLOR_DEFAULT       || "#ffe094"
-HUBOT_JENKINS_BOT_ICON            = process.env.HUBOT_JENKINS_BOT_ICON            || "https://slack.global.ssl.fastly.net/7bf4/img/services/jenkins-ci_48.png"
+HUBOT_JENKINS_BOT_ICON            = process.env.HUBOT_JENKINS_BOT_ICON            || "http://jenkins-ci.org/sites/default/files/images/headshot.png"
 HUBOT_JENKINS_BOT_NAME            = process.env.HUBOT_JENKINS_BOT_NAME            || "Jenkins"
 
 module.exports = (robot) ->
